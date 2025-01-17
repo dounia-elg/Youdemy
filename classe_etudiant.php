@@ -4,6 +4,13 @@ require_once 'classe_utilisateur.php';
 class Etudiant extends Utilisateur {
     private array $listeCoursInscrits = [];
 
+   
+    public function __construct(string $nom, string $email, string $password, string $statut = 'actif') {
+        
+        parent::__construct($nom, $email, $password, 'etudiant', $statut);
+    }
+
+    
     public function signup(PDO $conn) {
         $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, statut) VALUES (:nom, :email, :password, :role, :statut)");
         $stmt->execute([
@@ -13,10 +20,11 @@ class Etudiant extends Utilisateur {
             ':role' => $this->getRole(),
             ':statut' => $this->getStatut()
         ]);
-        echo "Utilisateur $this->getNom() a été inscrit avec succès.\n";
+        echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
     }
 
-    public function inscrire_Cours(PDO $conn, $coursId) {
+    
+    public function inscrire_Cours(PDO $conn, int $coursId) {
         $stmt = $conn->prepare("INSERT INTO etudiant_cours (id_etudiant, id_cours) VALUES (:id_etudiant, :id_cours)");
         $stmt->execute([
             ':id_etudiant' => $this->getId(),
@@ -25,13 +33,25 @@ class Etudiant extends Utilisateur {
         echo "L'étudiant {$this->getNom()} est inscrit au cours ID $coursId.\n";
     }
 
+    
     public function consulter_Cours(PDO $conn) {
-        $stmt = $conn->prepare("SELECT c.titre FROM cours c JOIN etudiant_cours ec ON c.id_cour = ec.id_cours WHERE ec.id_etudiant = :id_etudiant");
+        $stmt = $conn->prepare("
+            SELECT c.titre 
+            FROM cours c 
+            JOIN etudiant_cours ec ON c.id_cour = ec.id_cours 
+            WHERE ec.id_etudiant = :id_etudiant
+        ");
         $stmt->execute([':id_etudiant' => $this->getId()]);
         $this->listeCoursInscrits = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        echo "Cours inscrits pour {$this->getNom()}: ".implode(", ", $this->listeCoursInscrits)."\n";
+        
+        if (!empty($this->listeCoursInscrits)) {
+            echo "Cours inscrits pour {$this->getNom()}: " . implode(", ", $this->listeCoursInscrits) . "\n";
+        } else {
+            echo "{$this->getNom()} n'est inscrit à aucun cours.\n";
+        }
     }
 
+    
     public function voirMesCours(PDO $conn) {
         $stmt = $conn->prepare("
             SELECT c.id_cour, c.titre, c.description 
