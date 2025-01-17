@@ -28,7 +28,7 @@
         <p class="text-lg mb-6">
           Bienvenue dans votre espace enseignant. Ajoutez de nouveaux cours, gérez vos contenus et suivez les statistiques d'apprentissage.
         </p>
-        <a href="#add-course" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Commencer maintenant</a>
+        <a href="#add-course" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Ajouter un cour</a>
       </div>
       <div class="md:w-1/2 mt-6 md:mt-0">
         <img src="/teacher.jpg" alt="Espace Enseignant" class="rounded-lg shadow-lg mx-auto">
@@ -38,38 +38,6 @@
 
   <!-- Main Content -->
   <main class="container mx-auto p-6">
-
-    <!-- Ajouter un cours -->
-    <section id="add-course" class="my-12">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-600">Ajouter un nouveau cours</h2>
-      <form class="bg-white p-6 rounded-lg shadow-md">
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Titre du cours</label>
-          <input type="text" class="w-full border-gray-300 rounded-lg p-2" placeholder="Exemple : Développement Web">
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Description</label>
-          <textarea class="w-full border-gray-300 rounded-lg p-2" rows="4" placeholder="Décrivez brièvement le contenu du cours"></textarea>
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Catégorie</label>
-          <select class="w-full border-gray-300 rounded-lg p-2">
-            <option>Programmation</option>
-            <option>Marketing</option>
-            <option>Design</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Tags (séparés par une virgule)</label>
-          <input type="text" class="w-full border-gray-300 rounded-lg p-2" placeholder="Exemple : JavaScript, Frontend">
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Contenu du cours</label>
-          <input type="file" class="w-full border-gray-300 rounded-lg p-2">
-        </div>
-        <button class="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600">Ajouter</button>
-      </form>
-    </section>
 
     <!-- Gestion des cours -->
     <section id="manage-courses" class="my-12">

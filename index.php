@@ -17,14 +17,12 @@
   <!-- Header -->
   <header class="bg-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center py-4 px-6">
-      <a href="#" class="text-3xl font-bold text-indigo-600">Youdemy</a>
+      <a href="/index.php" class="text-3xl font-bold text-indigo-600">Youdemy</a>
       <nav class="space-x-6">
-        <a href="#" class="text-gray-600 hover:text-indigo-600">Accueil</a>
+        <a href="/index.php" class="text-gray-600 hover:text-indigo-600">Accueil</a>
         <a href="#courses" class="text-gray-600 hover:text-indigo-600">Catalogue</a>
-        <a href="#" class="text-gray-600 hover:text-indigo-600">Connexion</a>
-        <a href="#" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">
-          Inscription
-        </a>
+        <a href="/Authentification/login.php" class="text-gray-600 hover:text-indigo-600">Connexion</a>
+        <a href="/Authentification/signup.php" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">Inscription</a>
       </nav>
     </div>
   </header>
