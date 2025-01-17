@@ -1,11 +1,20 @@
 <?php
-class Utilisateur {
+abstract class Utilisateur {
     protected int $id;
     protected string $nom;
     protected string $email;
     protected string $password;
     protected string $role;
     protected string $statut;
+
+    
+    public function __construct(string $nom, string $email, string $password, string $role = 'user', string $statut = 'actif') {
+        $this->nom = $nom;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+        $this->statut = $statut;
+    }
 
     
     public function login(PDO $conn) {
@@ -26,7 +35,7 @@ class Utilisateur {
         echo "Utilisateur $this->email est déconnecté.\n";
     }
 
-   
+    
     public function setNom(string $nom) {
         $this->nom = $nom;
     }
@@ -66,5 +75,8 @@ class Utilisateur {
     public function getStatut(): string {
         return $this->statut;
     }
+
+    
+    abstract public function afficherInformations(): void;
 }
 ?>

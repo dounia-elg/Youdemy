@@ -2,18 +2,18 @@
 require_once 'classe_utilisateur.php';
 
 class Enseignant extends Utilisateur {
-    public array $listeCoursCrees = [];
+    private array $listeCoursCrees = [];
 
     public function signup(PDO $conn) {
         $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, statut) VALUES (:nom, :email, :password, :role, :statut)");
         $stmt->execute([
-            ':nom' => $this->nom,
-            ':email' => $this->email,
-            ':password' => password_hash($this->password, PASSWORD_BCRYPT),
-            ':role' => $this->role,
-            ':statut' => $this->statut
+            ':nom' => $this->getNom(),
+            ':email' => $this->getEmail(),
+            ':password' => password_hash($this->getPassword(), PASSWORD_BCRYPT),
+            ':role' => $this->getRole(),
+            ':statut' => $this->getStatut()
         ]);
-        echo "Utilisateur $this->nom a été inscrit avec succès.\n";
+        echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
     }
 
     public function ajouter_Cours(PDO $conn, $titre, $description, $contenu, $categorie, $tag) {
@@ -24,9 +24,9 @@ class Enseignant extends Utilisateur {
             ':contenu' => $contenu,
             ':id_categorie' => $categorie,
             ':id_tag' => $tag,
-            ':id_enseignant' => $this->id
+            ':id_enseignant' => $this->getId()
         ]);
-        echo "Cours '$titre' ajouté par l'enseignant $this->nom.\n";
+        echo "Cours '$titre' ajouté par l'enseignant {$this->getNom()}.\n";
     }
 
     public function modifier_Cours(PDO $conn, $idCours, $nouveauTitre, $nouvelleDescription, $nouveauContenu, $nouvelleCategorie, $nouveauTag) {
@@ -42,11 +42,11 @@ class Enseignant extends Utilisateur {
             ':id_categorie' => $nouvelleCategorie,
             ':id_tag' => $nouveauTag,
             ':id_cour' => $idCours,
-            ':id_enseignant' => $this->id
+            ':id_enseignant' => $this->getId()
         ]);
 
         if ($stmt->rowCount() > 0) {
-            echo "Le cours ID $idCours a été modifié avec succès par l'enseignant $this->nom.\n";
+            echo "Le cours ID $idCours a été modifié avec succès par l'enseignant {$this->getNom()}.\n";
         } else {
             echo "Échec de la modification du cours ou cours introuvable.\n";
         }
@@ -56,11 +56,11 @@ class Enseignant extends Utilisateur {
         $stmt = $conn->prepare("DELETE FROM cours WHERE id_cour = :id_cour AND id_enseignant = :id_enseignant");
         $stmt->execute([
             ':id_cour' => $idCours,
-            ':id_enseignant' => $this->id
+            ':id_enseignant' => $this->getId()
         ]);
 
         if ($stmt->rowCount() > 0) {
-            echo "Le cours ID $idCours a été supprimé par l'enseignant $this->nom.\n";
+            echo "Le cours ID $idCours a été supprimé par l'enseignant {$this->getNom()}.\n";
         } else {
             echo "Échec de la suppression du cours ou cours introuvable.\n";
         }
@@ -68,10 +68,9 @@ class Enseignant extends Utilisateur {
 
     public function afficher_Statistiques(PDO $conn) {
         $stmt = $conn->prepare("SELECT COUNT(*) FROM cours WHERE id_enseignant = :id_enseignant");
-        $stmt->execute([':id_enseignant' => $this->id]);
+        $stmt->execute([':id_enseignant' => $this->getId()]);
         $nombreCours = $stmt->fetchColumn();
-        echo "Statistiques pour l'enseignant $this->nom : $nombreCours cours créés.\n";
+        echo "Statistiques pour l'enseignant {$this->getNom()} : $nombreCours cours créés.\n";
     }
 }
-
 ?>
