@@ -1,29 +1,32 @@
 <?php
-require_once 'classe_utilisateur.php';
+require_once '../classe_utilisateur.php';
 
 class Enseignant extends Utilisateur {
     private array $listeCoursCrees = [];
 
-    
-    public function __construct(string $nom, string $email, string $password, string $statut = 'actif') {
-        
-        parent::__construct($nom, $email, $password, 'enseignant', $statut);
+    public function __construct(string $nom, string $email, string $password, string $status = 'active') {
+        parent::__construct($nom, $email, $password, 'enseignant', $status);
     }
 
-    
+    public function afficherInformations(): void {
+        echo "Nom: {$this->getNom()}<br>";
+        echo "Email: {$this->getEmail()}<br>";
+        echo "Rôle: {$this->getRole()}<br>";
+        echo "Statut: {$this->getStatut()}<br>";
+    }
+
     public function signup(PDO $conn) {
-        $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, statut) VALUES (:nom, :email, :password, :role, :statut)");
+        $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, status) VALUES (:nom, :email, :password, :role, :status)");
         $stmt->execute([
             ':nom' => $this->getNom(),
             ':email' => $this->getEmail(),
             ':password' => password_hash($this->getPassword(), PASSWORD_BCRYPT),
             ':role' => $this->getRole(),
-            ':statut' => $this->getStatut()
+            ':status' => $this->getStatut()  
         ]);
         echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
     }
 
-    
     public function ajouter_Cours(PDO $conn, string $titre, string $description, string $contenu, int $categorie, int $tag) {
         $stmt = $conn->prepare("INSERT INTO cours (titre, description, contenu, id_categorie, id_tag, id_enseignant) VALUES (:titre, :description, :contenu, :id_categorie, :id_tag, :id_enseignant)");
         $stmt->execute([
@@ -37,7 +40,6 @@ class Enseignant extends Utilisateur {
         echo "Cours '$titre' ajouté par l'enseignant {$this->getNom()}.\n";
     }
 
-    
     public function modifier_Cours(PDO $conn, int $idCours, string $nouveauTitre, string $nouvelleDescription, string $nouveauContenu, int $nouvelleCategorie, int $nouveauTag) {
         $stmt = $conn->prepare("
             UPDATE cours 
@@ -61,7 +63,6 @@ class Enseignant extends Utilisateur {
         }
     }
 
-    
     public function supprimer_Cours(PDO $conn, int $idCours) {
         $stmt = $conn->prepare("DELETE FROM cours WHERE id_cour = :id_cour AND id_enseignant = :id_enseignant");
         $stmt->execute([
@@ -76,7 +77,6 @@ class Enseignant extends Utilisateur {
         }
     }
 
-    
     public function afficher_Statistiques(PDO $conn) {
         $stmt = $conn->prepare("SELECT COUNT(*) FROM cours WHERE id_enseignant = :id_enseignant");
         $stmt->execute([':id_enseignant' => $this->getId()]);

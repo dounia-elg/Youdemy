@@ -1,29 +1,33 @@
 <?php
-require_once 'classe_utilisateur.php';
+require_once '../classe_utilisateur.php';
 
 class Etudiant extends Utilisateur {
     private array $listeCoursInscrits = [];
 
-   
-    public function __construct(string $nom, string $email, string $password, string $statut = 'actif') {
-        
-        parent::__construct($nom, $email, $password, 'etudiant', $statut);
+    public function __construct(string $nom, string $email, string $password, string $status = 'active') {
+        parent::__construct($nom, $email, $password, 'etudiant', $status);
     }
 
-    
+    // Implement the abstract method from Utilisateur class
+    public function afficherInformations(): void {
+        echo "Nom: {$this->getNom()}<br>";
+        echo "Email: {$this->getEmail()}<br>";
+        echo "Rôle: {$this->getRole()}<br>";
+        echo "Statut: {$this->getStatut()}<br>";
+    }
+
     public function signup(PDO $conn) {
-        $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, statut) VALUES (:nom, :email, :password, :role, :statut)");
+        $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, status) VALUES (:nom, :email, :password, :role, :status)");
         $stmt->execute([
             ':nom' => $this->getNom(),
             ':email' => $this->getEmail(),
             ':password' => password_hash($this->getPassword(), PASSWORD_BCRYPT),
             ':role' => $this->getRole(),
-            ':statut' => $this->getStatut()
+            ':status' => $this->getStatut()  // Correct column name: status
         ]);
         echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
     }
 
-    
     public function inscrire_Cours(PDO $conn, int $coursId) {
         $stmt = $conn->prepare("INSERT INTO etudiant_cours (id_etudiant, id_cours) VALUES (:id_etudiant, :id_cours)");
         $stmt->execute([
@@ -33,7 +37,6 @@ class Etudiant extends Utilisateur {
         echo "L'étudiant {$this->getNom()} est inscrit au cours ID $coursId.\n";
     }
 
-    
     public function consulter_Cours(PDO $conn) {
         $stmt = $conn->prepare("
             SELECT c.titre 
@@ -51,7 +54,6 @@ class Etudiant extends Utilisateur {
         }
     }
 
-    
     public function voirMesCours(PDO $conn) {
         $stmt = $conn->prepare("
             SELECT c.id_cour, c.titre, c.description 
