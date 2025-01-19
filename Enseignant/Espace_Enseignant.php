@@ -31,7 +31,7 @@
         <a href="#add-course" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Ajouter un cour</a>
       </div>
       <div class="md:w-1/2 mt-6 md:mt-0">
-        <img src="/teacher.jpg" alt="Espace Enseignant" class="rounded-lg shadow-lg mx-auto">
+        <img src="/img/teacher.jpg" alt="Espace Enseignant" class="rounded-lg shadow-lg mx-auto">
       </div>
     </div>
   </section>
@@ -52,7 +52,7 @@
             <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Supprimer</button>
           </div>
         </div>
-        <!-- Répétez pour d'autres cours -->
+        
       </div>
     </section>
 

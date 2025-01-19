@@ -1,3 +1,8 @@
+<?php
+require_once '../connect.php'; 
+require_once '../Enseignant/classe_enseignant.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,28 +31,36 @@
 
     <!-- Validation des enseignants -->
     <section id="validate-teachers" class="mb-16">
+      
+      <?php
+      
+      $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE role = 'enseignant' AND est_valide = FALSE");
+      $stmt->execute();
+      $pendingTeachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      ?>
+
       <h2 class="text-2xl font-bold mb-4">Validation des enseignants</h2>
       <table class="w-full bg-white shadow rounded-lg">
         <thead class="bg-indigo-600 text-white">
           <tr>
-            <th class="px-4 py-2">Nom</th>
-            <th class="px-4 py-2">Email</th>
-            <th class="px-4 py-2">Statut</th>
-            <th class="px-4 py-2">Actions</th>
+              <th class="px-4 py-2">Nom</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="border-b">
-            <td class="px-4 py-2">Marie Curie</td>
-            <td class="px-4 py-2">marie@example.com</td>
-            <td class="px-4 py-2">En attente</td>
-            <td class="px-4 py-2">
-              <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Valider</button>
-              <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Rejeter</button>
-            </td>
-          </tr>
+          <?php foreach ($pendingTeachers as $teacher): ?>
+              <tr class="border-b">
+                  <td class="px-4 py-2"><?= $teacher['nom'] ?></td>
+                  <td class="px-4 py-2"><?= $teacher['email'] ?></td>
+                  <td class="px-4 py-2">
+                      <a class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" href="valider_enseignant.php?id=<?= $teacher['id'] ?>">valider</a>  
+                  </td>
+              </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
+
     </section>
 
     <!-- Gestion des utilisateurs -->

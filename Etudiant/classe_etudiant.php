@@ -8,7 +8,7 @@ class Etudiant extends Utilisateur {
         parent::__construct($nom, $email, $password, 'etudiant', $status);
     }
 
-    // Implement the abstract method from Utilisateur class
+    
     public function afficherInformations(): void {
         echo "Nom: {$this->getNom()}<br>";
         echo "Email: {$this->getEmail()}<br>";
@@ -23,7 +23,7 @@ class Etudiant extends Utilisateur {
             ':email' => $this->getEmail(),
             ':password' => password_hash($this->getPassword(), PASSWORD_BCRYPT),
             ':role' => $this->getRole(),
-            ':status' => $this->getStatut()  // Correct column name: status
+            ':status' => $this->getStatut()  
         ]);
         echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
     }

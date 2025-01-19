@@ -28,7 +28,7 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="relative h-screen bg-cover bg-center" style="background-image: url('/hero.jpg');">
+  <section class="relative h-screen bg-cover bg-center" style="background-image: url('/img/hero.jpg');">
     <div class="hero-overlay absolute inset-0"></div>
     <div class="relative text-center text-white flex flex-col justify-center h-full px-6">
       <h1 class="text-5xl md:text-6xl font-bold mb-6">
@@ -54,21 +54,21 @@
       <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Pourquoi choisir Youdemy ?</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="p-6 rounded-lg shadow-lg bg-white">
-          <img src="/formation.jpg" alt="Formation Complète" class="w-full h-48 object-cover mb-4">
+          <img src="/img/formation.jpg" alt="Formation Complète" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-blue-600 mb-4">Formation Complète</h3>
           <p class="text-gray-700">
             Des cours pour tous les niveaux, du débutant à l'expert.
           </p>
         </div>
         <div class="p-6 rounded-lg shadow-lg bg-white">
-          <img src="/community.jpg" alt="Communauté Active" class="w-full h-48 object-cover mb-4">
+          <img src="/img/community.jpg" alt="Communauté Active" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-green-600 mb-4">Communauté Active</h3>
           <p class="text-gray-700">
             Échangez avec des étudiants et enseignants passionnés.
           </p>
         </div>
         <div class="p-6 rounded-lg shadow-lg bg-white">
-          <img src="/suivi.jpg" alt="Suivi Personnalisé" class="w-full h-48 object-cover mb-4">
+          <img src="/img/suivi.jpg" alt="Suivi Personnalisé" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-purple-600 mb-4">Suivi Personnalisé</h3>
           <p class="text-gray-700">
             Progressez avec des statistiques détaillées et des retours.

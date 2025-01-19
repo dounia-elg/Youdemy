@@ -1,7 +1,7 @@
 <?php
 require_once '../connect.php'; 
-require_once '../classe_etudiant.php'; 
-require_once '../classe_enseignant.php'; 
+require_once '../Etudiant/classe_etudiant.php'; 
+require_once '../Enseignant/classe_enseignant.php'; 
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -31,7 +31,7 @@
         <a href="#courses" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Explorer les cours</a>
       </div>
       <div class="md:w-1/2 mt-6 md:mt-0">
-        <img src="/etudiant.jpg" alt="Espace Étudiant" class="rounded-lg shadow-lg mx-auto">
+        <img src="/img/etudiant.jpg" alt="Espace Étudiant" class="rounded-lg shadow-lg mx-auto">
       </div>
     </div>
   </section>
@@ -53,7 +53,7 @@
             <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">S'inscrire</button>
           </div>
         </div>
-        <!-- Répétez pour d'autres cours -->
+        
       </div>
     </section>
 

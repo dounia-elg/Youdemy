@@ -16,16 +16,22 @@ class Enseignant extends Utilisateur {
     }
 
     public function signup(PDO $conn) {
-        $stmt = $conn->prepare("INSERT INTO utilisateur (nom, email, password, role, status) VALUES (:nom, :email, :password, :role, :status)");
+        $stmt = $conn->prepare("
+            INSERT INTO utilisateur (nom, email, password, role, status, est_valide) 
+            VALUES (:nom, :email, :password, :role, :status, :est_valide)
+        ");
         $stmt->execute([
             ':nom' => $this->getNom(),
             ':email' => $this->getEmail(),
             ':password' => password_hash($this->getPassword(), PASSWORD_BCRYPT),
             ':role' => $this->getRole(),
-            ':status' => $this->getStatut()  
+            ':status' => $this->getStatut(),
+            ':est_valide' => 0 
         ]);
-        echo "Utilisateur {$this->getNom()} a été inscrit avec succès.\n";
+        echo "l'enseignant a été inscri avec succès. En attente de l'approbation des asministrateurs.";
     }
+    
+    
 
     public function ajouter_Cours(PDO $conn, string $titre, string $description, string $contenu, int $categorie, int $tag) {
         $stmt = $conn->prepare("INSERT INTO cours (titre, description, contenu, id_categorie, id_tag, id_enseignant) VALUES (:titre, :description, :contenu, :id_categorie, :id_tag, :id_enseignant)");
