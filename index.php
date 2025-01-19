@@ -31,19 +31,11 @@
   <section class="relative h-screen bg-cover bg-center" style="background-image: url('/img/hero.jpg');">
     <div class="hero-overlay absolute inset-0"></div>
     <div class="relative text-center text-white flex flex-col justify-center h-full px-6">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6">
-        Votre avenir commence ici avec <span class="text-yellow-300">Youdemy</span>
-      </h1>
-      <p class="text-lg md:text-xl mb-8">
-        Apprenez, enseignez et inspirez grâce à notre plateforme d'apprentissage en ligne.
-      </p>
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Votre avenir commence ici avec <span class="text-yellow-300">Youdemy</span></h1>
+      <p class="text-lg md:text-xl mb-8">Apprenez, enseignez et inspirez grâce à notre plateforme d'apprentissage en ligne.</p>
       <div class="flex justify-center space-x-4">
-        <a href="#courses" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-lg text-white font-medium">
-          Explorer les cours
-        </a>
-        <a href="#" class="px-6 py-3 bg-yellow-300 hover:bg-yellow-400 rounded-lg shadow-lg text-gray-900 font-medium">
-          Devenir enseignant
-        </a>
+        <a href="#courses" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-lg text-white font-medium">Explorer les cours</a>
+        <a href="#" class="px-6 py-3 bg-yellow-300 hover:bg-yellow-400 rounded-lg shadow-lg text-gray-900 font-medium">Devenir enseignant</a>
       </div>
     </div>
   </section>
@@ -56,23 +48,17 @@
         <div class="p-6 rounded-lg shadow-lg bg-white">
           <img src="/img/formation.jpg" alt="Formation Complète" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-blue-600 mb-4">Formation Complète</h3>
-          <p class="text-gray-700">
-            Des cours pour tous les niveaux, du débutant à l'expert.
-          </p>
+          <p class="text-gray-700">Des cours pour tous les niveaux, du débutant à l'expert.</p>
         </div>
         <div class="p-6 rounded-lg shadow-lg bg-white">
           <img src="/img/community.jpg" alt="Communauté Active" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-green-600 mb-4">Communauté Active</h3>
-          <p class="text-gray-700">
-            Échangez avec des étudiants et enseignants passionnés.
-          </p>
+          <p class="text-gray-700">Échangez avec des étudiants et enseignants passionnés.</p>
         </div>
         <div class="p-6 rounded-lg shadow-lg bg-white">
           <img src="/img/suivi.jpg" alt="Suivi Personnalisé" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-purple-600 mb-4">Suivi Personnalisé</h3>
-          <p class="text-gray-700">
-            Progressez avec des statistiques détaillées et des retours.
-          </p>
+          <p class="text-gray-700">Progressez avec des statistiques détaillées et des retours./p>
         </div>
       </div>
     </div>
@@ -88,8 +74,7 @@
           <img src="https://via.placeholder.com/400x300" alt="Développement Web" class="w-full h-48 object-cover">
           <div class="p-6 bg-white">
             <h3 class="text-2xl font-bold text-indigo-600 mb-4">Développement Web</h3>
-            <p class="text-gray-700 mb-4">
-              Apprenez les bases du développement web avec HTML, CSS et JavaScript.
+            <p class="text-gray-700 mb-4">Apprenez les bases du développement web avec HTML, CSS et JavaScript.
             </p>
             <a href="#" class="text-indigo-600 font-semibold hover:underline">Voir le cours &rarr;</a>
           </div>
