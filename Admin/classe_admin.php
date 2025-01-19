@@ -1,17 +1,35 @@
 <?php
 require_once '../classe_utilisateur.php';
 
+
 class Admin extends Utilisateur {
-    public function __construct(string $nom, string $email, string $password, string $status = 'active') {
-        parent::__construct($nom, $email, $password, 'admin', $status);
+    public function __construct(string $nom, string $email, string $password) {
+        parent::__construct($nom, $email, $password, 'admin'); 
+    }
+
+    
+    public function afficherInformations(): void {
+        echo "Admin : Nom = {$this->nom}, Email = {$this->email}, Statut = {$this->statut}";
     }
 
     
     public function ValiderComptesEnseignants(PDO $conn, int $idEnseignant): void {
-        $stmt = $conn->prepare("UPDATE utilisateur SET est_valide = TRUE WHERE id = :id AND role = 'enseignant'");
-        $stmt->execute([':id' => $idEnseignant]);
-        echo "Compte enseignant ID $idEnseignant validé avec succès.\n";
+        try {
+            $stmt = $conn->prepare("UPDATE utilisateur SET est_valide = TRUE WHERE id = :id AND role = 'enseignant'");
+            $stmt->bindParam(':id', $idEnseignant, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                echo "L'enseignant a été validé avec succès.";
+            } else {
+                throw new Exception("Échec de la validation : Aucun enseignant trouvé avec cet ID.");
+            }
+        } catch (Exception $e) {
+            throw new Exception("Erreur lors de la validation de l'enseignant : " . $e->getMessage());
+        }
     }
+
+
 
     
     public function ActiverUtilisateurs(PDO $conn, int $idUtilisateur): void {
@@ -84,4 +102,11 @@ class Admin extends Utilisateur {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
+
+
+
+
+
+
 ?>

@@ -1,7 +1,35 @@
 <?php
-require_once '../connect.php'; 
-require_once '../Enseignant/classe_enseignant.php'; 
+require_once '../connect.php';
+require_once '../Enseignant/classe_enseignant.php';
+require_once '../Admin/classe_admin.php';
+
+
+$admin = new Admin('Admin', 'admin@gmail.com', 'password');
+
+
+try {
+    $stmt = $conn->prepare("SELECT id, nom, email FROM utilisateur WHERE role = 'enseignant' AND est_valide = 0");
+    $stmt->execute();
+    $pendingTeachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Erreur lors de la récupération des enseignants : " . $e->getMessage();
+    $pendingTeachers = [];
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['enseignant_id'])) {
+    $enseignantId = (int) $_POST['enseignant_id'];
+
+    try {
+        $admin->ValiderComptesEnseignants($conn, $enseignantId);
+        header("Location: Espace_Admin.php?success=1");
+        exit;
+    } catch (Exception $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,37 +59,39 @@ require_once '../Enseignant/classe_enseignant.php';
 
     <!-- Validation des enseignants -->
     <section id="validate-teachers" class="mb-16">
-      
-      <?php
-      
-      $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE role = 'enseignant' AND est_valide = FALSE");
-      $stmt->execute();
-      $pendingTeachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?>
 
-      <h2 class="text-2xl font-bold mb-4">Validation des enseignants</h2>
-      <table class="w-full bg-white shadow rounded-lg">
-        <thead class="bg-indigo-600 text-white">
-          <tr>
-              <th class="px-4 py-2">Nom</th>
-              <th class="px-4 py-2">Email</th>
-              <th class="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($pendingTeachers as $teacher): ?>
-              <tr class="border-b">
-                  <td class="px-4 py-2"><?= $teacher['nom'] ?></td>
-                  <td class="px-4 py-2"><?= $teacher['email'] ?></td>
-                  <td class="px-4 py-2">
-                      <a class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" href="valider_enseignant.php?id=<?= $teacher['id'] ?>">valider</a>  
-                  </td>
-              </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-
+        <h2 class="text-2xl font-bold mb-4">Validation des enseignants</h2>
+        <table class="w-full bg-white shadow rounded-lg">
+            <thead class="bg-indigo-600 text-white">
+                <tr>
+                    <th class="px-4 py-2">Nom</th>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($pendingTeachers)): ?>
+                    <?php foreach ($pendingTeachers as $teacher): ?>
+                        <tr class="border-b">
+                            <td class="px-4 py-2"><?= htmlspecialchars($teacher['nom']) ?></td>
+                            <td class="px-4 py-2"><?= htmlspecialchars($teacher['email']) ?></td>
+                            <td class="px-4 py-2">
+                                <form method="POST" action="">
+                                    <input type="hidden" name="enseignant_id" value="<?= $teacher['id'] ?>">
+                                    <button type="submit" name="valider" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Valider</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="3" class="px-4 py-2 text-center">Aucun enseignant en attente de validation.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </section>
+
 
     <!-- Gestion des utilisateurs -->
     <section id="users-management" class="mb-16">
