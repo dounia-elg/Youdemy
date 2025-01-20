@@ -1,6 +1,6 @@
 <?php
 require_once '../connect.php';
-require_once '../Categories/ClasseCategories.php';
+require_once 'ClasseCategories.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
@@ -11,8 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
     
     if ($categorie->ajouterCategorie()) {
-        $successMessage = "Catégorie ajoutée avec succès!";
+        
+        header("Location: ../Admin/Espace_Admin.php?success=1");
+        exit; 
     } else {
+        
         $errorMessage = "Erreur lors de l'ajout de la catégorie.";
     }
 }
@@ -31,10 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         <h1 class="text-2xl font-bold mb-6">Ajouter une Catégorie</h1>
         <?php if (!empty($errorMessage)): ?>
             <p class="text-red-600 mb-4"><?= htmlspecialchars($errorMessage) ?></p>
-        <?php elseif (!empty($successMessage)): ?>
-            <p class="text-green-600 mb-4"><?= htmlspecialchars($successMessage) ?></p>
         <?php endif; ?>
-        <form action="../Categories/AjouterCategorie.php" method="POST">
+        <form action="AjouterCategorie.php" method="POST">
             <div class="mb-4">
                 <label for="nom" class="block font-bold mb-2">Nom de la catégorie :</label>
                 <input type="text" id="nom" name="nom" class="w-full px-4 py-2 border rounded" required>
