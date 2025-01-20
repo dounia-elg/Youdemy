@@ -21,19 +21,26 @@ abstract class Utilisateur {
         $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email");
         $stmt->execute([':email' => $this->email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if ($user && password_verify($this->password, $user['password'])) {  
             $this->id = $user['id'];  
-            echo "Utilisateur $this->email est connecté.\n";
+            $_SESSION['role'] = $user['role'];  
+            return true; 
         } else {
-            echo "Échec de la connexion.\n";
+            return false;  
         }
     }
 
     
     public function logout() {
-        echo "Utilisateur $this->email est déconnecté.\n";
+        session_start();
+        session_unset();
+        session_destroy();
+        header('Location: login.php'); 
+        exit();
     }
+
+    abstract public function afficherInformations(): void;
 
     
     public function setNom(string $nom) {
@@ -77,6 +84,6 @@ abstract class Utilisateur {
     }
 
     
-    abstract public function afficherInformations(): void;
+    
 }
 ?>
