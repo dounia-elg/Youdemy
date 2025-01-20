@@ -16,6 +16,8 @@
         <a href="#add-course" class="mx-4 hover:underline">Ajouter un cours</a>
         <a href="#manage-courses" class="mx-4 hover:underline">Mes cours</a>
         <a href="#statistics" class="mx-4 hover:underline">Statistiques</a>
+        <a href="../Authentification/logout.php"  class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+
       </nav>
     </div>
   </header>

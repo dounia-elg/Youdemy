@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
       <a href="#courses-management" class="block py-2 px-4 hover:bg-indigo-700">Gestion des cours</a>
       <a href="#categories-tags" class="block py-2 px-4 hover:bg-indigo-700">Catégories & Tags</a>
       <a href="#stats" class="block py-2 px-4 hover:bg-indigo-700">Statistiques globales</a>
+      <a href="../Authentification/logout.php"  class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
     </nav>
   </aside>
 
