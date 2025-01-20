@@ -17,13 +17,14 @@ class Categories {
     public function ajouterCategorie(): bool {
         try {
             $stmt = $this->conn->prepare("INSERT INTO categories (nom) VALUES (:nom)");
-            $stmt->bindParam(':nom', $this->nom);
+            $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR); 
             return $stmt->execute();
         } catch (Exception $e) {
-            echo "Erreur lors de l'ajout de la catégorie: " . $e->getMessage();
+            echo "Erreur lors de l'ajout de la catégorie : " . $e->getMessage();
             return false;
         }
     }
+    
 
    
     public function modifierCategorie(): bool {
@@ -51,16 +52,18 @@ class Categories {
     }
 
     
-    public function listeCategories(): array {
+    public function listeCategories() {
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM categories");
-            $stmt->execute();
+            $sql = "SELECT id_categorie, nom FROM categories";
+            $stmt = $this->conn->query($sql);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            echo "Erreur lors de la récupération des catégories: " . $e->getMessage();
-            return [];
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération des catégories : " . $e->getMessage());
         }
     }
+    
+    
+    
 
     
     public function setNom(string $nom): void {
