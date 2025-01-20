@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
 
     try {
         $admin->ValiderComptesEnseignants($conn, $enseignantId);
-        header("Location: Espace_Admin.php?success=1");
+        header("Location: ../Admin/Espace_Admin.php?success=1");
         exit;
     } catch (Exception $e) {
         echo "Erreur : " . $e->getMessage();
@@ -33,6 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
 
 $categorie = new Categories($conn);
 $categories = $categorie->listeCategories();
+
+
+
 
 ?>
 
@@ -163,33 +166,35 @@ $categories = $categorie->listeCategories();
     </a>
 
     <!-- Tableau des catégories -->
-    <table class="w-full bg-white shadow rounded-lg">
-            <thead class="bg-indigo-600 text-white">
-                <tr>
-                    <th class="px-4 py-2">Nom</th>
-                    <th class="px-4 py-2">Actions</th>
+<table class="w-full bg-white shadow rounded-lg">
+    <thead class="bg-indigo-600 text-white">
+        <tr>
+            <th class="px-4 py-2">Nom</th>
+            <th class="px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($categories)): ?>
+            <?php foreach ($categories as $categorie): ?>
+                <tr class="border-b">
+                    <td class="px-4 py-2"><?= htmlspecialchars($categorie['nom']) ?></td>
+                    <td class="px-4 py-2">
+                        <a href="../Categories/ModifierCategorie.php?id=<?= htmlspecialchars($categorie['id_categorie']) ?>" 
+                           class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Modifier</a>
+                        <a href="../Categories/SupprimerCategorie.php?id=<?= htmlspecialchars($categorie['id_categorie']) ?>" 
+                           class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">Supprimer</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($categories)): ?>
-                    <?php foreach ($categories as $categorie): ?>
-                        <tr class="border-b">
-                            <td class="px-4 py-2"><?= htmlspecialchars($categorie['nom']) ?></td>
-                            <td class="px-4 py-2">
-                                <a href="../Categories/ModifierCategorie.php?id=<?= htmlspecialchars($categorie['id_categorie']) ?>" 
-                                   class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Modifier</a>
-                                <a href="../Categories/SupprimerCategorie.php?id=<?= htmlspecialchars($categorie['id_categorie']) ?>" 
-                                   class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Supprimer</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="2" class="px-4 py-2 text-center">Aucune catégorie disponible.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="2" class="px-4 py-2 text-center">Aucune catégorie disponible.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
 </section>
 
 

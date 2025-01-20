@@ -29,26 +29,29 @@ class Categories {
    
     public function modifierCategorie(): bool {
         try {
-            $stmt = $this->conn->prepare("UPDATE categories SET nom = :nom WHERE id = :id");
-            $stmt->bindParam(':nom', $this->nom);
-            $stmt->bindParam(':id', $this->id);
+            $stmt = $this->conn->prepare("UPDATE categories SET nom = :nom WHERE id_categorie = :id");
+            $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR); // Correction : spécifiez PDO::PARAM_STR pour plus de clarté
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);  // Utilisez $this->id au lieu de $this->id_categorie
             return $stmt->execute();
         } catch (Exception $e) {
-            echo "Erreur lors de la modification de la catégorie: " . $e->getMessage();
+            echo "Erreur lors de la modification de la catégorie : " . $e->getMessage();
             return false;
         }
     }
+    
 
     
-    public function supprimerCategorie(): bool {
+    public function supprimerCategorie() {
         try {
-            $stmt = $this->conn->prepare("DELETE FROM categories WHERE id = :id");
-            $stmt->bindParam(':id', $this->id);
-            return $stmt->execute();
+            $stmt = $this->conn->prepare("DELETE FROM categories WHERE id_categorie = :id");
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
         } catch (Exception $e) {
-            echo "Erreur lors de la suppression de la catégorie: " . $e->getMessage();
             return false;
         }
+        
+        
     }
 
     
