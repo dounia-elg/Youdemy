@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
       <a href="#courses-management" class="block py-2 px-4 hover:bg-indigo-700">Gestion des cours</a>
       <a href="#categories-tags" class="block py-2 px-4 hover:bg-indigo-700">Catégories & Tags</a>
       <a href="#stats" class="block py-2 px-4 hover:bg-indigo-700">Statistiques globales</a>
-      <a href="../Authentification/logout.php"  class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+      <a href="../Authentification/logout.php"  class="block py-2 px-4 hover:bg-indigo-700">Se déconnecter</a>
     </nav>
   </aside>
 
@@ -146,21 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
       </table>
     </section>
 
-    <!-- Catégories & Tags -->
-    <section id="categories-tags" class="mb-16">
-      <h2 class="text-2xl font-bold mb-4">Catégories & Tags</h2>
-      <form class="bg-white p-6 rounded-lg shadow-md max-w-2xl">
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Nouvelle catégorie</label>
-          <input type="text" class="w-full border-gray-300 rounded-lg p-2" placeholder="Exemple : Marketing">
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Tags (séparés par une virgule)</label>
-          <input type="text" class="w-full border-gray-300 rounded-lg p-2" placeholder="Exemple : Design, SEO">
-        </div>
-        <button class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Ajouter</button>
-      </form>
-    </section>
+    
 
     <!-- Statistiques -->
     <section id="stats">
