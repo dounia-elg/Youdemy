@@ -76,7 +76,7 @@
             <h3 class="text-2xl font-bold text-indigo-600 mb-4">Développement Web</h3>
             <p class="text-gray-700 mb-4">Apprenez les bases du développement web avec HTML, CSS et JavaScript.
             </p>
-            <a href="#" class="text-indigo-600 font-semibold hover:underline">Voir le cours &rarr;</a>
+            <a href="/Cours/detailCours.php" class="text-indigo-600 font-semibold hover:underline">Voir le cours &rarr;</a>
           </div>
         </div>
         <!-- Card 2 -->
@@ -87,7 +87,7 @@
             <p class="text-gray-700 mb-4">
               Explorez les outils de création comme Photoshop et Illustrator.
             </p>
-            <a href="#" class="text-green-600 font-semibold hover:underline">Voir le cours &rarr;</a>
+            <a href="/Cours/detailCours.php" class="text-green-600 font-semibold hover:underline">Voir le cours &rarr;</a>
           </div>
         </div>
         <!-- Card 3 -->
@@ -98,7 +98,7 @@
             <p class="text-gray-700 mb-4">
               Maîtrisez les outils d'analyse de données avec Python et Excel.
             </p>
-            <a href="#" class="text-purple-600 font-semibold hover:underline">Voir le cours &rarr;</a>
+            <a href="/Cours/detailCours.php" class="text-purple-600 font-semibold hover:underline">Voir le cours &rarr;</a>
           </div>
         </div>
       </div>

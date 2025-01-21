@@ -7,14 +7,17 @@ class Cours {
     private string $contenu;
     private int $idCategorie;
     private int $idEnseignant;
+    private string $categorie;
+    private int $id;
 
-    public function __construct(PDO $conn, string $titre, string $description, string $contenu, int $idCategorie, int $idEnseignant) {
+    public function __construct(PDO $conn, string $titre, string $description, string $contenu, int $idCategorie, int $idEnseignant, string $categorie = '') {
         $this->conn = $conn;
         $this->titre = $titre;
         $this->description = $description;
         $this->contenu = $contenu;
         $this->idCategorie = $idCategorie;
         $this->idEnseignant = $idEnseignant;
+        $this->categorie = $categorie;
     }
 
     public function ajouterCours(): bool {
@@ -67,13 +70,31 @@ class Cours {
         }
     }
 
-    public function getCoursByEnseignant($enseignant_id) {
-        $query = "SELECT * FROM cours WHERE id_enseignant = :id_enseignant";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id_enseignant', $enseignant_id);
+    public static function getCoursByEnseignant(PDO $conn, $enseignant_id) {
+        $query = "
+            SELECT 
+                cours.id_cour, 
+                cours.titre, 
+                cours.description, 
+                cours.contenu, 
+                categories.nom AS categorie_nom, 
+                utilisateur.nom AS enseignant_nom 
+            FROM 
+                cours
+            LEFT JOIN 
+                categories ON cours.id_categorie = categories.id_categorie
+            LEFT JOIN 
+                utilisateur ON cours.id_enseignant = utilisateur.id
+            WHERE 
+                cours.id_enseignant = :id_enseignant
+        ";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id_enseignant', $enseignant_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    
 
     public function rechercherCours(string $motCle): array {
         try {
