@@ -41,22 +41,15 @@
   <!-- Main Content -->
   <main class="container mx-auto p-6">
 
-    <!-- Gestion des cours -->
-    <section id="manage-courses" class="my-12">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-600">Mes cours</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <h3 class="text-xl font-bold text-gray-700">Développement Web</h3>
-          <p class="text-gray-600">Catégorie : Programmation</p>
-          <p class="text-gray-600">Étudiants inscrits : 50</p>
-          <div class="mt-4 flex justify-between">
-            <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Modifier</button>
-            <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Supprimer</button>
-          </div>
-        </div>
-        
-      </div>
-    </section>
+    <!-- Gestion mes cours -->
+    
+
+
+
+
+
+
+
 
     <!-- Statistiques -->
     <section id="statistics" class="my-12">

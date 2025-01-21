@@ -41,10 +41,6 @@ class Cours {
     }
 
 
-
-
-
-    // Modifier un cours
     public function modifierCours(): bool {
         try {
             $stmt = $this->conn->prepare("UPDATE cours SET titre = :titre, description = :description, contenu = :contenu, categorie = :categorie WHERE id_cours = :id");
@@ -60,7 +56,6 @@ class Cours {
         }
     }
 
-    // Supprimer un cours
     public function supprimerCours(): bool {
         try {
             $stmt = $this->conn->prepare("DELETE FROM cours WHERE id_cours = :id");
@@ -72,7 +67,14 @@ class Cours {
         }
     }
 
-    // Rechercher un cours par titre
+    public function getCoursByEnseignant($enseignant_id) {
+        $query = "SELECT * FROM cours WHERE id_enseignant = :id_enseignant";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_enseignant', $enseignant_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function rechercherCours(string $motCle): array {
         try {
             $stmt = $this->conn->prepare("SELECT * FROM cours WHERE titre LIKE :motCle");
@@ -86,7 +88,6 @@ class Cours {
         }
     }
 
-    // Consulter tous les cours
     public function consulterAllCours(): array {
         try {
             $stmt = $this->conn->query("SELECT * FROM cours");
@@ -97,7 +98,7 @@ class Cours {
         }
     }
 
-    // Setters et Getters
+    
     public function setTitre(string $titre): void {
         $this->titre = $titre;
     }
