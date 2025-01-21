@@ -1,26 +1,21 @@
 <?php
 session_start();  
 
-
 require_once '../connect.php';
 require_once '../classe_utilisateur.php'; 
 require_once '../Admin/classe_admin.php'; 
 require_once '../Enseignant/classe_enseignant.php'; 
 require_once '../Etudiant/classe_etudiant.php'; 
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    
     $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        
         if ($user['role'] == 'admin') {
             $userObj = new Admin($user['nom'], $user['email'], $password); 
         } elseif ($user['role'] == 'enseignant') {
@@ -32,17 +27,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
 
-        
         if ($userObj->login($conn)) {
-            
+            // Stocker les informations dans la session
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['id_user'] = $user['id']; // ID de l'utilisateur
+            $_SESSION['email'] = $user['email']; // Email de l'utilisateur
+            $_SESSION['id_enseignant'] = ($user['role'] == 'enseignant') ? $user['id'] : null; // ID de l'enseignant
+
+            // Rediriger selon le rôle
             if ($_SESSION['role'] == 'admin') {
                 header('Location: /Admin/Espace_Admin.php');
             } elseif ($_SESSION['role'] == 'enseignant') {
                 header('Location: /Enseignant/Espace_Enseignant.php');
             } elseif ($_SESSION['role'] == 'etudiant') {
                 header('Location: /Etudiant/Espace_Etudiant.php');
-            } else {
-                echo "Unknown role.";
             }
             exit();
         } else {
@@ -53,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
 
 

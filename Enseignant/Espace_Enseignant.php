@@ -30,7 +30,7 @@
         <p class="text-lg mb-6">
           Bienvenue dans votre espace enseignant. Ajoutez de nouveaux cours, gérez vos contenus et suivez les statistiques d'apprentissage.
         </p>
-        <a href="#add-course" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Ajouter un cour</a>
+        <a href="../Cours/ajouterCours.php" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Ajouter un cour</a>
       </div>
       <div class="md:w-1/2 mt-6 md:mt-0">
         <img src="/img/teacher.jpg" alt="Espace Enseignant" class="rounded-lg shadow-lg mx-auto">
