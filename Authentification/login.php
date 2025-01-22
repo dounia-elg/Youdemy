@@ -15,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    
+
     if ($user) {
         if ($user['role'] == 'admin') {
             $userObj = new Admin($user['nom'], $user['email'], $password); 

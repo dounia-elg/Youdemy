@@ -74,12 +74,22 @@ $totalPages = ceil($totalCours / $limit);
         <?php if (!empty($courses)): ?>
           <?php foreach ($courses as $course): ?>
             <div class="bg-white rounded-lg shadow-md p-4">
-              <h3 class="text-xl font-bold text-gray-700"><?= htmlspecialchars($course['titre']) ?></h3>
-              <p class="text-gray-600"><?= htmlspecialchars($course['description']) ?></p>
-              <div class="mt-4">
-                <button class="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 w-full"><a href="../Etudiant/desinscrire.php?id_cours=<?php echo $course['id_cour']; ?>">désinscrire</a></button>
-              </div>
+                <h3 class="text-xl font-bold text-gray-700"><?= htmlspecialchars($course['titre']) ?></h3>
+                <p class="text-gray-600"><?= htmlspecialchars($course['description']) ?></p>
+                <div class="mt-4 flex justify-between">
+                    <!-- Bouton désinscrire -->
+                    <a href="../Etudiant/desinscrire.php?id_cours=<?= $course['id_cour'] ?>" 
+                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                    désinscrire
+                    </a>
+                    <!-- Bouton détails -->
+                    <a href="../Cours/detailCours.php?id_cours=<?= $course['id_cour'] ?>" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Détails
+                    </a>
+                </div>      
             </div>
+
           <?php endforeach; ?>
         <?php else: ?>
           <p class="text-center text-gray-700">Vous n'êtes inscrit à aucun cours pour le moment.</p>

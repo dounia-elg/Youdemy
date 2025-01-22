@@ -10,14 +10,14 @@ class Cours {
     private ?string $categorie;
     private ?int $id;
 
-    public function __construct(PDO $conn, ?string $titre = null, ?string $description = null, ?string $contenu = null, ?int $idCategorie = null, ?int $idEnseignant = null) {
+    public function __construct(PDO $conn, ?string $titre = null, ?string $description = null, ?string $contenu = null, ?int $idCategorie = null, ?int $idEnseignant = null, ?string $categorie = null) {
         $this->conn = $conn;
         $this->titre = $titre;
         $this->description = $description;
         $this->contenu = $contenu;
         $this->idCategorie = $idCategorie;
         $this->idEnseignant = $idEnseignant;
-       
+        $this->categorie = $categorie;
     }
 
     
@@ -40,11 +40,11 @@ class Cours {
 
     
     public static function getCoursById($conn, $id_cour) {
-        $stmt = $conn->prepare("SELECT * FROM cours WHERE id_cour = :id_cour");
+        $stmt = $conn->prepare("SELECT * , ca.nom as category FROM cours c 
+        left join categories ca on c.id_categorie = ca.id_categorie WHERE id_cour = :id_cour");
         $stmt->bindParam(':id_cour', $id_cour, PDO::PARAM_INT);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    
         if ($data) {
             $cours = new Cours(
                 $conn,
@@ -52,12 +52,14 @@ class Cours {
                 $data['description'],
                 $data['contenu'],
                 $data['id_categorie'],
-                $data['id_enseignant']
+                $data['id_enseignant'],
+                $data['category']
             );
             $cours->setId($data['id_cour']);
             return $cours;
         }
-        return null; 
+
+        return "reda"; 
     }
 
     public static function getCoursByEnseignant(PDO $conn, $enseignant_id) {
@@ -180,6 +182,37 @@ class Cours {
             return 0;
         }
     }
+
+    public static function voirDetailsCours(PDO $conn, int $id_cour): ?array {
+        try {
+            $stmt = $conn->prepare("
+                SELECT 
+                    c.id_cour, 
+                    c.titre, 
+                    c.description, 
+                    c.contenu, 
+                    cat.nom AS categorie, 
+                    u.nom AS enseignant_nom 
+                FROM 
+                    cours c
+                LEFT JOIN 
+                    categories cat ON c.id_categorie = cat.id_categorie
+                LEFT JOIN 
+                    utilisateur u ON c.id_enseignant = u.id
+                WHERE 
+                    c.id_cour = :id_cour
+            ");
+            $stmt->bindParam(':id_cour', $id_cour, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null;
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la récupération des détails du cours : " . $e->getMessage());
+            return null;
+        }
+    }
+    
     
 
     
@@ -230,6 +263,18 @@ class Cours {
 
     public function getId(): int {
         return $this->id;
+    }
+    public function getuser(){
+
+        try {
+            $stmt = $this->conn->query("SELECT * FROM utilisateur where id = $this->idEnseignant ");
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['nom'] ?? "user not found";
+        } catch (PDOException $e) {
+            error_log("Erreur lors du comptage des cours : " . $e->getMessage());
+            return $this->idEnseignant;
+        }
+
     }
 }
 ?>

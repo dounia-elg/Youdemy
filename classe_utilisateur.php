@@ -32,6 +32,7 @@ abstract class Utilisateur {
     }
 
     
+    
     public function logout() {
         session_start();
         session_unset();
