@@ -20,6 +20,7 @@ class Cours {
         $this->categorie = $categorie;
     }
 
+    
     public function ajouterCours(): bool {
         try {
             $stmt = $this->conn->prepare("INSERT INTO cours (titre, description, contenu, id_categorie, id_enseignant) 
@@ -30,44 +31,33 @@ class Cours {
             $stmt->bindParam(':idCategorie', $this->idCategorie, PDO::PARAM_INT);
             $stmt->bindParam(':idEnseignant', $this->idEnseignant, PDO::PARAM_INT);
 
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                $errorInfo = $stmt->errorInfo();
-                echo "Erreur SQL : " . $errorInfo[2];
-                return false;
-            }
+            return $stmt->execute(); 
         } catch (Exception $e) {
             echo "Erreur lors de l'ajout du cours : " . $e->getMessage();
             return false;
         }
     }
 
-
-    public function modifierCours(): bool {
-        try {
-            $stmt = $this->conn->prepare("UPDATE cours SET titre = :titre, description = :description, contenu = :contenu, categorie = :categorie WHERE id_cours = :id");
-            $stmt->bindParam(':titre', $this->titre, PDO::PARAM_STR);
-            $stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
-            $stmt->bindParam(':contenu', $this->contenu, PDO::PARAM_STR);
-            $stmt->bindParam(':categorie', $this->categorie, PDO::PARAM_STR);
-            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Erreur lors de la modification du cours : " . $e->getMessage());
-            return false;
+    
+    public static function getCoursById($conn, $id_cour) {
+        $stmt = $conn->prepare("SELECT * FROM cours WHERE id_cour = :id_cour");
+        $stmt->bindParam(':id_cour', $id_cour, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($data) {
+            $cours = new Cours(
+                $conn,
+                $data['titre'],
+                $data['description'],
+                $data['contenu'],
+                $data['id_categorie'],
+                $data['id_enseignant']
+            );
+            $cours->setId($data['id_cour']);
+            return $cours;
         }
-    }
-
-    public function supprimerCours(): bool {
-        try {
-            $stmt = $this->conn->prepare("DELETE FROM cours WHERE id_cours = :id");
-            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Erreur lors de la suppression du cours : " . $e->getMessage());
-            return false;
-        }
+        return null; 
     }
 
     public static function getCoursByEnseignant(PDO $conn, $enseignant_id) {
@@ -94,8 +84,46 @@ class Cours {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    
 
+   
+    public static function getCategories($conn) {
+        $stmt = $conn->prepare("SELECT * FROM categories");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
+    public function modifierCours(): bool {
+        try {
+            $stmt = $this->conn->prepare("UPDATE cours 
+                                          SET titre = :titre, description = :description, contenu = :contenu, id_categorie = :id_categorie 
+                                          WHERE id_cour = :id_cour");
+            $stmt->bindParam(':titre', $this->titre, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
+            $stmt->bindParam(':contenu', $this->contenu, PDO::PARAM_STR);
+            $stmt->bindParam(':id_categorie', $this->idCategorie, PDO::PARAM_INT);
+            $stmt->bindParam(':id_cour', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur SQL lors de la mise à jour du cours : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    
+    public function supprimerCours(): bool {
+        try {
+            $stmt = $this->conn->prepare("DELETE FROM cours WHERE id_cours = :id");
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la suppression du cours : " . $e->getMessage());
+            return false;
+        }
+    }
+
+   
     public function rechercherCours(string $motCle): array {
         try {
             $stmt = $this->conn->prepare("SELECT * FROM cours WHERE titre LIKE :motCle");
@@ -109,6 +137,7 @@ class Cours {
         }
     }
 
+    
     public function consulterAllCours(): array {
         try {
             $stmt = $this->conn->query("SELECT * FROM cours");
@@ -152,6 +181,15 @@ class Cours {
         return $this->categorie;
     }
 
+    
+    public function setIdCategorie(int $idCategorie): void {
+        $this->idCategorie = $idCategorie;
+    }
+
+    public function getIdCategorie(): int {
+        return $this->idCategorie;
+    }
+
     public function setId(int $id): void {
         $this->id = $id;
     }
@@ -160,5 +198,4 @@ class Cours {
         return $this->id;
     }
 }
-
 ?>

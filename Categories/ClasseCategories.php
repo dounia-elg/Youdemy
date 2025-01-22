@@ -30,8 +30,8 @@ class Categories {
     public function modifierCategorie(): bool {
         try {
             $stmt = $this->conn->prepare("UPDATE categories SET nom = :nom WHERE id_categorie = :id");
-            $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR); // Correction : spécifiez PDO::PARAM_STR pour plus de clarté
-            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);  // Utilisez $this->id au lieu de $this->id_categorie
+            $stmt->bindParam(':nom', $this->nom, PDO::PARAM_STR); 
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);  
             return $stmt->execute();
         } catch (Exception $e) {
             echo "Erreur lors de la modification de la catégorie : " . $e->getMessage();
