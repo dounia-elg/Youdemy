@@ -2,22 +2,22 @@
 
 class Cours {
     private PDO $conn;
-    private string $titre;
-    private string $description;
-    private string $contenu;
-    private int $idCategorie;
-    private int $idEnseignant;
-    private string $categorie;
-    private int $id;
+    private ?string $titre;
+    private ?string $description;
+    private ?string $contenu;
+    private ?int $idCategorie;
+    private ?int $idEnseignant;
+    private ?string $categorie;
+    private ?int $id;
 
-    public function __construct(PDO $conn, string $titre, string $description, string $contenu, int $idCategorie, int $idEnseignant, string $categorie = '') {
+    public function __construct(PDO $conn, ?string $titre = null, ?string $description = null, ?string $contenu = null, ?int $idCategorie = null, ?int $idEnseignant = null) {
         $this->conn = $conn;
         $this->titre = $titre;
         $this->description = $description;
         $this->contenu = $contenu;
         $this->idCategorie = $idCategorie;
         $this->idEnseignant = $idEnseignant;
-        $this->categorie = $categorie;
+       
     }
 
     
@@ -92,6 +92,28 @@ class Cours {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function inscrireCours(int $idEtudiant, int $idCours): bool {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM inscription WHERE id_etudiant = :id_etudiant AND id_cours = :id_cours");
+            $stmt->bindParam(':id_etudiant', $idEtudiant, PDO::PARAM_INT);
+            $stmt->bindParam(':id_cours', $idCours, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return false;
+            }
+
+
+            $stmt = $this->conn->prepare("INSERT INTO inscription (id_etudiant, id_cours) VALUES (:id_etudiant, :id_cours)");
+            $stmt->bindParam(':id_etudiant', $idEtudiant, PDO::PARAM_INT);
+            $stmt->bindParam(':id_cours', $idCours, PDO::PARAM_INT);
+            return $stmt->execute(); 
+        } catch (Exception $e) {
+            echo "Erreur lors de l'inscription de l'étudiant : " . $e->getMessage();
+            return false;
+        }
+    }
+
     
     public function modifierCours(): bool {
         try {
@@ -134,15 +156,31 @@ class Cours {
     }
 
     
-    public function consulterAllCours(): array {
+    public function consulterAllCoursPagines(int $page, int $limit): array {
         try {
-            $stmt = $this->conn->query("SELECT * FROM cours");
+            $offset = ($page - 1) * $limit;
+            $stmt = $this->conn->prepare("SELECT * FROM cours LIMIT :limit OFFSET :offset");
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Erreur lors de la récupération des cours : " . $e->getMessage());
+            error_log("Erreur lors de la récupération des cours avec pagination : " . $e->getMessage());
             return [];
         }
     }
+    
+    public function countAllCours(): int {
+        try {
+            $stmt = $this->conn->query("SELECT COUNT(*) AS total FROM cours");
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Erreur lors du comptage des cours : " . $e->getMessage());
+            return 0;
+        }
+    }
+    
 
     
     public function setTitre(string $titre): void {

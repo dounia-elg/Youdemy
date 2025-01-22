@@ -1,3 +1,24 @@
+<?php
+require_once '../Cours/ClasseCours.php'; 
+require_once '../connect.php'; 
+session_start();
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = 6; 
+$offset = ($page - 1) * $limit;
+
+$stmt = $conn->prepare("SELECT * FROM cours LIMIT :limit OFFSET :offset");
+$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$coursList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$totalCours = $conn->query("SELECT COUNT(*) FROM cours")->fetchColumn();
+$totalPages = ceil($totalCours / $limit);
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +35,9 @@
       <h1 class="text-2xl font-bold text-blue-700">Youdemy - Espace Étudiant</h1>
       <nav>
         <a href="#courses" class="mx-4 hover:underline">Catalogue</a>
-        <a href="#my-courses" class="mx-4 hover:underline">Mes cours</a>
+        <a href="/../index.php" class="mx-4 hover:underline">Acceuil</a>
+
+        <a href="../Etudiant/myCourses.php" class="mx-4 hover:underline">Mes cours</a>
         <a href="#profile" class="mx-4 hover:underline">Profil</a>
         <a href="../Authentification/logout.php"  class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
       </nav>
@@ -41,54 +64,44 @@
   <main class="container mx-auto p-6">
 
     <!-- Catalogue des cours -->
-    <section id="courses" class="my-12">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-600">Catalogue des cours</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Card for a course -->
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <h3 class="text-xl font-bold text-gray-700">Développement Web</h3>
-          <p class="text-gray-600">Enseignant : John Doe</p>
-          <p class="text-gray-600">Catégorie : Programmation</p>
-          <div class="mt-4 flex justify-between items-center">
-            <button class="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600">Détails</button>
-            <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">S'inscrire</button>
+    <section id="courses" class="py-16 bg-gray-50">
+  <div class="container mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Catalogue des Cours</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <?php if (!empty($coursList)): ?>
+        <?php foreach ($coursList as $course): ?>
+
+          <div class="p-6 rounded-lg shadow-lg bg-white">
+            <h3 class="text-xl font-bold text-indigo-600 mb-4"><?= htmlspecialchars($course['titre']) ?></h3>
+            <p class="text-gray-700 mb-4"><?= htmlspecialchars($course['description']) ?></p>
+            <!-- Bouton S'inscrire -->
+            <form action="/Etudiant/inscription.php" method="post">
+              <input type="hidden" name="id_cour" value="<?= $course['id_cour'] ?>">
+              <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">
+              <a href="/Etudiant/inscription.php?id_cours=<?php echo $course['id_cour']; ?>">S'inscrire</a>
+              </button>
+            </form>
           </div>
-        </div>
-        
-      </div>
-    </section>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p class="text-center text-gray-700">Aucun cours disponible.</p>
+      <?php endif; ?>
+    </div>
 
-    <!-- Mes cours -->
-    <section id="my-courses" class="my-12">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-600">Mes cours</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Card for a student's course -->
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <h3 class="text-xl font-bold text-gray-700">Développement Web</h3>
-          <p class="text-gray-600">Enseignant : John Doe</p>
-          <p class="text-gray-600">Progression : 50%</p>
-          <div class="mt-4">
-            <button class="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 w-full">Continuer</button>
-          </div>
-        </div>
-        <!-- Répétez pour d'autres cours -->
-      </div>
-    </section>
+    <div class="mt-8 text-center">
+      <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <a href="?page=<?= $i ?>" class="px-4 py-2 mx-1 rounded <?= $i == $page ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800' ?>">
+          <?= $i ?>
+        </a>
+      <?php endfor; ?>
+    </div>
+  </div>
+</section>
 
-    <!-- Profil étudiant -->
-    <section id="profile" class="my-12">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-600">Mon profil</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700 font-bold">Nom : <span class="font-normal">Jane Doe</span></p>
-        <p class="text-gray-700 font-bold">Email : <span class="font-normal">jane.doe@example.com</span></p>
-        <p class="text-gray-700 font-bold">Cours suivis : <span class="font-normal">5</span></p>
-        <div class="mt-4">
-          <button class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Se déconnecter</button>
-        </div>
-      </div>
-    </section>
+  
 
-  </main>
+
+    
 
   <!-- Footer -->
   <footer class="bg-gray-800 text-white py-4">
