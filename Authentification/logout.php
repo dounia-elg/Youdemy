@@ -1,29 +1,25 @@
 <?php
-
-require_once '../classe_utilisateur.php';  
-require_once '../Admin/classe_admin.php'; 
-require_once '../Enseignant/classe_enseignant.php'; 
-require_once '../Etudiant/classe_etudiant.php'; 
-
-
+// Démarrer la session
 session_start();
 
+// Détruire toutes les variables de session
+$_SESSION = array();
 
-if (isset($_SESSION['role']) && isset($_SESSION['email']) && isset($_SESSION['password'])) {
-    
-    if ($_SESSION['role'] == 'admin') {
-        $user = new Admin($_SESSION['nom'], $_SESSION['email'], $_SESSION['password'], $_SESSION['role']);
-    } elseif ($_SESSION['role'] == 'enseignant') {
-        $user = new Enseignant($_SESSION['nom'], $_SESSION['email'], $_SESSION['password'], $_SESSION['role']);
-    } elseif ($_SESSION['role'] == 'etudiant') {
-        $user = new Etudiant($_SESSION['nom'], $_SESSION['email'], $_SESSION['password'], $_SESSION['role']);
-    }
-
-    
-    $user->logout();
-} else {
-    
-    header('Location: login.php');
-    exit();
+// Si vous voulez détruire complètement la session, supprimez également le cookie de session.
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000, 
+        $params["path"], 
+        $params["domain"], 
+        $params["secure"], 
+        $params["httponly"]
+    );
 }
+
+// Détruire la session
+session_destroy();
+
+// Rediriger l'utilisateur vers la page d'accueil ou la page de connexion
+header("Location: /index.php"); // Redirige vers la page d'accueil
+exit();
 ?>

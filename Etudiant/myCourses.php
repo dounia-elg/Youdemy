@@ -5,7 +5,10 @@ session_start();
 
 $idEtudiant = isset( $_SESSION['id_user']) ?  $_SESSION['id_user'] : null;
 
-
+if (!isset($idEtudiant)) {
+    header('Location: http://localhost:3000/Authentification/login.php');
+    exit(); 
+  }
 $stmt = $conn->prepare("
    SELECT c.id_cour, c.titre, c.description
 FROM cours c
@@ -37,17 +40,29 @@ $totalPages = ceil($totalCours / $limit);
 <body class="bg-gray-50 text-gray-800">
 
   <!-- Navigation Bar -->
-  <header class="bg-white text-black py-4">
-    <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-2xl font-bold text-blue-700">Youdemy - Espace Étudiant</h1>
-      <nav>
-        <a href="../Etudiant/Espace_Etudiant.php" class="mx-4 hover:underline">Catalogue</a>
-        <a href="/../index.php" class="mx-4 hover:underline">Accueil</a>
-        <a href="#my-courses" class="mx-4 hover:underline">Mes cours</a>
-        <a href="../Authentification/logout.php" class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+  <header class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <a href="/index.php" class="text-3xl font-bold text-indigo-600">Youdemy</a>
+      <nav class="space-x-6">
+        <a href="/index.php" class="text-gray-600 hover:text-indigo-600">Accueil</a>
+        <a href="/Etudiant/Espace_Etudiant.php" class="mx-4 hover:underline">Catalogue</a>
+
+        
+        <!-- Vérification si l'étudiant est connecté -->
+        <?php if ($idEtudiant): ?>
+          <!-- Si l'étudiant est connecté -->
+          <a href="../Etudiant/myCourses.php" class="mx-4 hover:underline">Mes cours</a>
+          <a href="#profile" class="mx-4 hover:underline">Profil</a>
+          <a href="../Authentification/logout.php" class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+        <?php else: ?>
+          <!-- Si l'étudiant n'est pas connecté -->
+          <a href="../Authentification/login.php" class="text-gray-600 hover:text-indigo-600">Connexion</a>
+          <a href="../Authentification/signup.php" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">Inscription</a>
+        <?php endif; ?>
       </nav>
     </div>
   </header>
+
 
   <!-- Main Content -->
   <main class="container mx-auto p-6">

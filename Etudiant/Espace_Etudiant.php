@@ -2,6 +2,8 @@
 require_once '../Cours/ClasseCours.php'; 
 require_once '../connect.php'; 
 session_start();
+$idEtudiant = isset( $_SESSION['id_user']) ?  $_SESSION['id_user'] : null;
+
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 6; 
 $offset = ($page - 1) * $limit;
@@ -30,35 +32,30 @@ $totalPages = ceil($totalCours / $limit);
 <body class="bg-gray-50 text-gray-800">
 
   <!-- Navigation Bar -->
-  <header class="bg-white text-black py-4">
-    <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-2xl font-bold text-blue-700">Youdemy - Espace Étudiant</h1>
-      <nav>
-        <a href="#courses" class="mx-4 hover:underline">Catalogue</a>
-        <a href="/../index.php" class="mx-4 hover:underline">Acceuil</a>
+  <header class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <a href="/index.php" class="text-3xl font-bold text-indigo-600">Youdemy</a>
+      <nav class="space-x-6">
+        <a href="/index.php" class="text-gray-600 hover:text-indigo-600">Accueil</a>
+        <a href="/Etudiant/Espace_Etudiant.php" class="mx-4 hover:underline">Catalogue</a>
 
-        <a href="../Etudiant/myCourses.php" class="mx-4 hover:underline">Mes cours</a>
-        <a href="#profile" class="mx-4 hover:underline">Profil</a>
-        <a href="../Authentification/logout.php"  class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+        
+        <!-- Vérification si l'étudiant est connecté -->
+        <?php if ($idEtudiant): ?>
+          <!-- Si l'étudiant est connecté -->
+          <a href="../Etudiant/myCourses.php" class="mx-4 hover:underline">Mes cours</a>
+          <a href="#profile" class="mx-4 hover:underline">Profil</a>
+          <a href="../Authentification/logout.php" class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+        <?php else: ?>
+          <!-- Si l'étudiant n'est pas connecté -->
+          <a href="../Authentification/login.php" class="text-gray-600 hover:text-indigo-600">Connexion</a>
+          <a href="../Authentification/signup.php" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">Inscription</a>
+        <?php endif; ?>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-teal-500 to-indigo-600 text-white py-20">
-    <div class="container mx-auto flex flex-col md:flex-row items-center">
-      <div class="md:w-1/2 text-center md:text-left">
-        <h2 class="text-4xl font-bold mb-4">Apprenez à votre rythme</h2>
-        <p class="text-lg mb-6">
-          Découvrez des cours interactifs et enrichissants, inscrivez-vous et commencez votre parcours d’apprentissage dès maintenant.
-        </p>
-        <a href="#courses" class="px-6 py-3 bg-white text-teal-500 font-bold rounded-lg hover:bg-gray-200">Explorer les cours</a>
-      </div>
-      <div class="md:w-1/2 mt-6 md:mt-0">
-        <img src="/img/etudiant.jpg" alt="Espace Étudiant" class="rounded-lg shadow-lg mx-auto">
-      </div>
-    </div>
-  </section>
+
 
   <!-- Main Content -->
   <main class="container mx-auto p-6">

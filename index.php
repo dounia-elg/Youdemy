@@ -1,6 +1,10 @@
 <?php
 require_once 'Cours/ClasseCours.php'; 
 require_once 'connect.php'; 
+session_start();  
+$idEtudiant = isset($_SESSION['id_user']) ? $_SESSION['id_user'] : null;
+
+
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 6; 
@@ -16,9 +20,6 @@ $totalCours = $conn->query("SELECT COUNT(*) FROM cours")->fetchColumn();
 $totalPages = ceil($totalCours / $limit);
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,6 @@ $totalPages = ceil($totalCours / $limit);
   <title>Youdemy</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    
     .hero-overlay {
       background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
     }
@@ -41,8 +41,20 @@ $totalPages = ceil($totalCours / $limit);
       <a href="/index.php" class="text-3xl font-bold text-indigo-600">Youdemy</a>
       <nav class="space-x-6">
         <a href="/index.php" class="text-gray-600 hover:text-indigo-600">Accueil</a>
-        <a href="../Authentification/login.php" class="text-gray-600 hover:text-indigo-600">Connexion</a>
-        <a href="../Authentification/signup.php" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">Inscription</a>
+        <a href="/Etudiant/Espace_Etudiant.php" class="mx-4 hover:underline">Catalogue</a>
+
+        
+        <!-- Vérification si l'étudiant est connecté -->
+        <?php if ($idEtudiant): ?>
+          <!-- Si l'étudiant est connecté -->
+          <a href="../Etudiant/myCourses.php" class="mx-4 hover:underline">Mes cours</a>
+          <a href="#profile" class="mx-4 hover:underline">Profil</a>
+          <a href="../Authentification/logout.php" class="w-full py-2 px-4 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Se déconnecter</a>
+        <?php else: ?>
+          <!-- Si l'étudiant n'est pas connecté -->
+          <a href="../Authentification/login.php" class="text-gray-600 hover:text-indigo-600">Connexion</a>
+          <a href="../Authentification/signup.php" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700">Inscription</a>
+        <?php endif; ?>
       </nav>
     </div>
   </header>
@@ -78,19 +90,11 @@ $totalPages = ceil($totalCours / $limit);
         <div class="p-6 rounded-lg shadow-lg bg-white">
           <img src="/img/suivi.jpg" alt="Suivi Personnalisé" class="w-full h-48 object-cover mb-4">
           <h3 class="text-xl font-bold text-purple-600 mb-4">Suivi Personnalisé</h3>
-          <p class="text-gray-700">Progressez avec des statistiques détaillées et des retours./p>
+          <p class="text-gray-700">Progressez avec des statistiques détaillées et des retours.</p>
         </div>
       </div>
     </div>
   </section>
-
- 
-  
-
-   
-
-
-  
 
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 py-6">
