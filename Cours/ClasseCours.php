@@ -112,15 +112,11 @@ class Cours {
     }
 
     
-    public function supprimerCours(): bool {
-        try {
-            $stmt = $this->conn->prepare("DELETE FROM cours WHERE id_cours = :id");
-            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Erreur lors de la suppression du cours : " . $e->getMessage());
-            return false;
-        }
+    public function supprimerCours(PDO $conn): bool {
+        $sql = "DELETE FROM cours WHERE id_cour = :id_cour";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_cour', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 
    
