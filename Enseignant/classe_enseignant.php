@@ -4,7 +4,7 @@ require_once '../classe_utilisateur.php';
 class Enseignant extends Utilisateur {
     private array $listeCoursCrees = [];
 
-    public function __construct(string $nom, string $email, string $password, string $status = 'active') {
+    public function __construct(string $nom, string $email, string $password, string $status = 'suspended') {
         parent::__construct($nom, $email, $password, 'enseignant', $status);
     }
 
@@ -90,4 +90,8 @@ class Enseignant extends Utilisateur {
         echo "Statistiques pour l'enseignant {$this->getNom()} : $nombreCours cours créés.\n";
     }
 }
+
+
+
+
 ?>

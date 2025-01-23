@@ -11,14 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Email is not valid.";
         exit;
     }
 
-
-    
     if ($role === 'etudiant') {
         $user = new Etudiant($nom, $email, $password);
     } elseif ($role === 'enseignant') {
@@ -28,10 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    
     $user->signup($conn);
 
-    
     header('Location: login.php');
     exit;
 }

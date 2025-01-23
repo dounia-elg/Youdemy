@@ -1,18 +1,15 @@
 <?php
-require_once '../connect.php'; // Connexion à la base de données
-require_once '../Cours/ClasseCours.php'; // Inclure la classe Cours
+require_once '../connect.php'; 
+require_once '../Cours/ClasseCours.php'; 
 
-// Vérifier si un identifiant de cours est passé dans l'URL
 if (isset($_GET['id_cours'])) {
     $idCours = intval($_GET['id_cours']);
     $cours = Cours::getCoursById($conn, $idCours);
 
     if (!$cours) {
-        // Si aucun cours n'est trouvé, afficher un message d'erreur
         $messageErreur = "Cours introuvable.";
     }
 } else {
-    // Rediriger ou afficher une erreur si aucun ID n'est passé
     header("Location: ");
     exit;
 }
@@ -39,7 +36,7 @@ if (isset($_GET['id_cours'])) {
 
                 <?php if (isset($cours)): ?>
                     <div class="aspect-video mb-4">
-                        <!-- Remplacez l'exemple de vidéo par le contenu dynamique si nécessaire -->
+                        
                         <iframe 
                                         width="100%" 
                                         height="400" 

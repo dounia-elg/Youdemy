@@ -47,14 +47,12 @@ if (isset($_GET['id_cours'])) {
     <div class="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
         <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">Désinscription du Cours</h1>
 
-        <!-- Affichage du message -->
         <?php if (isset($message)): ?>
             <div class="mb-4 text-center text-sm <?= strpos($message, 'réussie') !== false ? 'text-green-600' : 'text-red-600' ?>">
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
 
-        <!-- Redirection ou retour à la page précédente -->
         <div class="text-center">
             <a href="javascript:history.back()" class="text-indigo-600 hover:underline">Retour aux cours</a>
         </div>

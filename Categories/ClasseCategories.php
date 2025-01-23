@@ -6,7 +6,6 @@ class Categories {
     private string $nom;
     private PDO $conn;
 
-    
     public function __construct(PDO $conn, string $nom = '', int $id = 0) {
         $this->conn = $conn;
         $this->nom = $nom;

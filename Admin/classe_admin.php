@@ -15,7 +15,7 @@ class Admin extends Utilisateur {
     
     public function ValiderComptesEnseignants(PDO $conn, int $idEnseignant): void {
         try {
-            $stmt = $conn->prepare("UPDATE utilisateur SET est_valide = TRUE WHERE id = :id AND role = 'enseignant'");
+            $stmt = $conn->prepare("UPDATE utilisateur SET status = 'active' WHERE id = :id AND role = 'enseignant'");
             $stmt->bindParam(':id', $idEnseignant, PDO::PARAM_INT);
             $stmt->execute();
 

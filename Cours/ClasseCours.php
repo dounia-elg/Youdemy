@@ -105,7 +105,6 @@ class Cours {
                 return false;
             }
 
-
             $stmt = $this->conn->prepare("INSERT INTO inscription (id_etudiant, id_cours) VALUES (:id_etudiant, :id_cours)");
             $stmt->bindParam(':id_etudiant', $idEtudiant, PDO::PARAM_INT);
             $stmt->bindParam(':id_cours', $idCours, PDO::PARAM_INT);

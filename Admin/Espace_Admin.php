@@ -9,7 +9,7 @@ $admin = new Admin('Admin', 'admin@gmail.com', 'password');
 
 
 try {
-    $stmt = $conn->prepare("SELECT id, nom, email FROM utilisateur WHERE role = 'enseignant' AND est_valide = 0");
+    $stmt = $conn->prepare("SELECT id, nom, email FROM utilisateur WHERE role = 'enseignant' AND status = 'suspended'");
     $stmt->execute();
     $pendingTeachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
@@ -105,56 +105,11 @@ $categories = $categorie->listeCategories();
 
 
     <!-- Gestion des utilisateurs -->
-    <section id="users-management" class="mb-16">
-      <h2 class="text-2xl font-bold mb-4">Gestion des utilisateurs</h2>
-      <table class="w-full bg-white shadow rounded-lg">
-        <thead class="bg-indigo-600 text-white">
-          <tr>
-            <th class="px-4 py-2">Nom</th>
-            <th class="px-4 py-2">Email</th>
-            <th class="px-4 py-2">Rôle</th>
-            <th class="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b">
-            <td class="px-4 py-2">Jean Dupont</td>
-            <td class="px-4 py-2">jean@example.com</td>
-            <td class="px-4 py-2">Étudiant</td>
-            <td class="px-4 py-2">
-              <button class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Suspendre</button>
-              <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Supprimer</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
 
-    <!-- Gestion des cours -->
-    <section id="courses-management" class="mb-16">
-      <h2 class="text-2xl font-bold mb-4">Gestion des cours</h2>
-      <table class="w-full bg-white shadow rounded-lg">
-        <thead class="bg-indigo-600 text-white">
-          <tr>
-            <th class="px-4 py-2">Titre</th>
-            <th class="px-4 py-2">Catégorie</th>
-            <th class="px-4 py-2">Enseignant</th>
-            <th class="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b">
-            <td class="px-4 py-2">Développement Web</td>
-            <td class="px-4 py-2">Programmation</td>
-            <td class="px-4 py-2">Mme Dupont</td>
-            <td class="px-4 py-2">
-              <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Modifier</button>
-              <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Supprimer</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+
+    
+
+    
 
 <!-- Gestion des catégories -->
 <section id="categories-tags" class="mb-16">

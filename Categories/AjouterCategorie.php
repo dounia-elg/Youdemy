@@ -2,14 +2,11 @@
 require_once '../connect.php';
 require_once 'ClasseCategories.php';
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $nom = $_POST['nom'];
 
-    
     $categorie = new Categories($conn, $nom);
 
-    
     if ($categorie->ajouterCategorie()) {
         
         header("Location: ../Admin/Espace_Admin.php?success=1");

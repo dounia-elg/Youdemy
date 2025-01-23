@@ -15,6 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    if($user['status'] === 'suspended'){
+        header("location: login.php ");
+        exit;
+    }
+//
     
 
     if ($user) {
@@ -30,13 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if ($userObj->login($conn)) {
-            // Stocker les informations dans la session
             $_SESSION['role'] = $user['role'];
-            $_SESSION['id_user'] = $user['id']; // ID de l'utilisateur
-            $_SESSION['email'] = $user['email']; // Email de l'utilisateur
-            $_SESSION['id_enseignant'] = ($user['role'] == 'enseignant') ? $user['id'] : null; // ID de l'enseignant
+            $_SESSION['id_user'] = $user['id']; 
+            $_SESSION['email'] = $user['email']; 
+            $_SESSION['id_enseignant'] = ($user['role'] == 'enseignant') ? $user['id'] : null; 
 
-            // Rediriger selon le rôle
             if ($_SESSION['role'] == 'admin') {
                 header('Location: /Admin/Espace_Admin.php');
             } elseif ($_SESSION['role'] == 'enseignant') {
