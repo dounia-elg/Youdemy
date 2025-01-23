@@ -7,6 +7,12 @@ require_once '../Admin/classe_admin.php';
 require_once '../Enseignant/classe_enseignant.php'; 
 require_once '../Etudiant/classe_etudiant.php'; 
 
+
+if(isset($_SESSION['id_user'])){
+    header("location: /index.php ");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];

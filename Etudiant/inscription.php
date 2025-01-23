@@ -4,8 +4,8 @@ require_once '../Cours/ClasseCours.php';
 session_start();  
 
 $idEtudiant = isset( $_SESSION['id_user']) ?  $_SESSION['id_user'] : null;
-if (isset($_GET['id_cours'])) {
-    $idCours = $_GET['id_cours'];
+if (isset($_POST['id_cours'])) {
+    $idCours = $_POST['id_cours'];
     
 } else {
     echo "Erreur : ID du cours manquant.";

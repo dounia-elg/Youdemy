@@ -32,17 +32,23 @@ class Admin extends Utilisateur {
 
 
     
-    public function ActiverUtilisateurs(PDO $conn, int $idUtilisateur): void {
-        $stmt = $conn->prepare("UPDATE utilisateur SET status = 'active' WHERE id = :id");
-        $stmt->execute([':id' => $idUtilisateur]);
-        echo "Utilisateur ID $idUtilisateur activé avec succès.\n";
-    }
+    // public function ActiverUtilisateurs(PDO $conn, int $idUtilisateur): void {
+    //     $stmt = $conn->prepare("UPDATE utilisateur SET status = 'active' WHERE id = :id");
+    //     $stmt->execute([':id' => $idUtilisateur]);
+    //     echo "Utilisateur ID $idUtilisateur activé avec succès.\n";
+    // }
 
     
-    public function SuspenserUtilisateurs(PDO $conn, int $idUtilisateur): void {
-        $stmt = $conn->prepare("UPDATE utilisateur SET status = 'suspended' WHERE id = :id");
-        $stmt->execute([':id' => $idUtilisateur]);
-        echo "Utilisateur ID $idUtilisateur suspendu avec succès.\n";
+    // public function SuspenserUtilisateurs(PDO $conn, int $idUtilisateur): void {
+    //     $stmt = $conn->prepare("UPDATE utilisateur SET status = 'suspended' WHERE id = :id");
+    //     $stmt->execute([':id' => $idUtilisateur]);
+    //     echo "Utilisateur ID $idUtilisateur suspendu avec succès.\n";
+    // }
+
+    public function ChangerStatutUtilisateur(PDO $conn, int $idUtilisateur, string $nouveauStatut): void {
+        $stmt = $conn->prepare("UPDATE utilisateur SET status = :status WHERE id = :id");
+        $stmt->execute([':status' => $nouveauStatut, ':id' => $idUtilisateur]);
+        echo "Utilisateur ID $idUtilisateur mis à jour avec le statut $nouveauStatut.\n";
     }
 
     

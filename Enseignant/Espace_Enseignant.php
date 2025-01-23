@@ -97,9 +97,9 @@ $cours = Cours::getCoursByEnseignant($conn, $enseignant_id);
                             <div class="mt-4 flex space-x-4">
                                 <a href="../Cours/modifierCours.php?id=<?= $cour['id_cour'] ?>" 
                                    class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Modifier</a>
-                                   <a href="../Cours/supprimerCours.php?id=<?= $cour['id_cour'] ?>" 
-                                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700" 
-                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?');">Supprimer</a>
+                                <a href="../Cours/supprimerCours.php?id=<?= $cour['id_cour'] ?>" 
+                                   class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700" 
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?');">Supprimer</a>
                             </div>
                         </div>
                     </div>

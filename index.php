@@ -96,6 +96,45 @@ $totalPages = ceil($totalCours / $limit);
     </div>
   </section>
 
+
+  <section id="courses" class="py-16">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold mb-8">Courses</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <?php foreach ($coursList as $cours): ?>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-2xl font-bold mb-2"><?php echo htmlspecialchars($cours['titre']); ?></h3>
+            <p class="text-gray-700 mb-4"><?php echo htmlspecialchars($cours['description']); ?></p>
+            <?php if ($idEtudiant): ?>
+              <?php
+              $stmt = $conn->prepare("SELECT COUNT(*) FROM inscription WHERE id_etudiant = :id_etudiant AND id_cours = :id_cour");
+              $stmt->execute([':id_etudiant' => $idEtudiant, ':id_cour' => $cours['id_cour']]);
+              $isEnrolled = $stmt->fetchColumn() > 0;
+              ?>
+              <?php if ($isEnrolled): ?>
+                <a class="py-2 px-4 bg-gray-500 text-white rounded-md shadow-md cursor-not-allowed" href="<?php echo 'Cours/detailCours.php?id_cours=' . $cours['id_cour']; ?>">Watch now</a>
+              <?php else: ?>
+                <form method="post" action="/Etudiant/inscription.php">
+                  <input type="hidden" name="id_cours" value="<?php echo $cours['id_cour']; ?>">
+                  <button type="submit" class="py-2 px-4 bg-teal-500 text-white rounded-md shadow-md hover:bg-teasl-600">Enroll Now</button>
+                </form>
+              <?php endif; ?>
+            <?php else: ?>
+              <a href="Authentification/login.php" class="py-2 px-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">Login to Enroll</a>
+            <?php endif; ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-8">
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <a href="?page=<?php echo $i; ?>" class="py-2 px-4 bg-gray-200 text-gray-700 rounded-md shadow-md hover:bg-gray-300 <?php echo $i == $page ? 'bg-gray-400' : ''; ?>"><?php echo $i; ?></a>
+        <?php endfor; ?>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 py-6">
     <div class="container mx-auto text-center">

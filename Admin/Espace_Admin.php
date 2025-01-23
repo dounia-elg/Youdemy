@@ -30,6 +30,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['valider'], $_POST['en
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['valider'], $_POST['enseignant_id'])) {
+      $enseignantId = (int) $_POST['enseignant_id'];
+
+      try {
+          $admin->ValiderComptesEnseignants($conn, $enseignantId);
+          header("Location: ../Admin/Espace_Admin.php?success=1");
+          exit;
+      } catch (Exception $e) {
+          echo "Erreur : " . $e->getMessage();
+      }
+  } elseif (isset($_POST['delete'], $_POST['user_id'])) {
+      $userId = (int) $_POST['user_id'];
+
+      try {
+        $admin->SupprimerUtilisateurs($conn, $userId);
+        header("Location: ../Admin/Espace_Admin.php?deleted=1");
+        exit;
+    } catch (Exception $e) {
+        echo "Erreur lors de la suppression de l'utilisateur : " . $e->getMessage();
+    }
+  } elseif (isset($_POST['change_status'], $_POST['user_id'], $_POST['new_status'])) {
+    $userId = (int) $_POST['user_id'];
+    $newStatus = $_POST['new_status'];
+
+    try {
+        $admin->ChangerStatutUtilisateur($conn, $userId, $newStatus);
+        header("Location: ../Admin/Espace_Admin.php?status_changed=1");
+        exit;
+    } catch (Exception $e) {
+        echo "Erreur lors du changement de statut de l'utilisateur : " . $e->getMessage();
+    }
+}
+}
+
 
 $categorie = new Categories($conn);
 $categories = $categorie->listeCategories();
@@ -107,8 +142,47 @@ $categories = $categorie->listeCategories();
     <!-- Gestion des utilisateurs -->
 
 
-    
+    <h1 class="text-2xl font-bold mt-8 mb-4">Liste des utilisateurs</h1>
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="py-2 px-4">ID</th>
+                <th class="py-2 px-4">Nom</th>
+                <th class="py-2 px-4">Email</th>
+                <th class="py-2 px-4">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            try {
+                $stmt = $conn->prepare("SELECT id, nom, email, status FROM utilisateur");
+                $stmt->execute();
+                $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                echo "Erreur lors de la récupération des utilisateurs : " . $e->getMessage();
+                $users = [];
+            }
 
+            foreach ($users as $user): ?>
+            <tr class="border-b">
+                <td class="py-2 px-4"><?php echo htmlspecialchars($user['id']); ?></td>
+                <td class="py-2 px-4"><?php echo htmlspecialchars($user['nom']); ?></td>
+                <td class="py-2 px-4"><?php echo htmlspecialchars($user['email']); ?></td>
+                <td class="py-2 px-4">
+                    <form method="post">
+                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                        <select name="new_status" class="bg-gray-200 border border-gray-300 rounded py-1 px-2">
+                            <option value="active" <?php echo $user['status'] == 'active' ? 'selected' : ''; ?>>Active</option>
+                            <option value="suspended" <?php echo $user['status'] == 'suspended' ? 'selected' : ''; ?>>Suspended</option>
+                        </select>
+                        <button type="submit" name="change_status" class="bg-blue-500 text-white py-1 px-3 rounded">Changer</button>
+                        <button type="submit" name="delete" class="bg-red-500 text-white py-1 px-3 rounded">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
     
 
 <!-- Gestion des catégories -->
