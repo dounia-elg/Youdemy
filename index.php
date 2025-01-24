@@ -112,15 +112,15 @@ $totalPages = ceil($totalCours / $limit);
               $isEnrolled = $stmt->fetchColumn() > 0;
               ?>
               <?php if ($isEnrolled): ?>
-                <a class="py-2 px-4 bg-gray-500 text-white rounded-md shadow-md cursor-not-allowed" href="<?php echo 'Cours/detailCours.php?id_cours=' . $cours['id_cour']; ?>">Watch now</a>
+                <a class="py-2 px-4 bg-gray-500 text-white rounded-md shadow-md cursor-not-allowed" href="<?php echo 'Cours/detailCours.php?id_cours=' . $cours['id_cour']; ?>">Regarder maintenant</a>
               <?php else: ?>
                 <form method="post" action="/Etudiant/inscription.php">
                   <input type="hidden" name="id_cours" value="<?php echo $cours['id_cour']; ?>">
-                  <button type="submit" class="py-2 px-4 bg-teal-500 text-white rounded-md shadow-md hover:bg-teasl-600">Enroll Now</button>
+                  <button type="submit" class="py-2 px-4 bg-teal-500 text-white rounded-md shadow-md hover:bg-teasl-600">inscrire</button>
                 </form>
               <?php endif; ?>
             <?php else: ?>
-              <a href="Authentification/login.php" class="py-2 px-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">Login to Enroll</a>
+              <a href="Authentification/login.php" class="py-2 px-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">Connectez-vous pour inscrire</a>
             <?php endif; ?>
           </div>
         <?php endforeach; ?>

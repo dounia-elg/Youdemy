@@ -42,4 +42,58 @@ class cat extends Animal {
 
 
 
+
+
+?>
+
+
+
+
+
+
+
+
+
+<?php
+
+
+abstract class Animal {
+    
+    protected $name;
+
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    abstract public function makeSound();
+}
+
+
+class Dog extends Animal {
+    public function makeSound() {
+        return "Woof! Woof!";
+    }
+}
+
+
+class Cat extends Animal {
+    public function makeSound() {
+        return "Meow! Meow!";
+    }
+}
+
+$dog = new Dog();
+$dog->setName("Rex");
+echo "Nom: " . $dog->getName() . "\n"; 
+echo "Son: " . $dog->makeSound() . "\n"; 
+
+$cat = new Cat();
+$cat->setName("Mimi");
+echo "Nom: " . $cat->getName() . "\n"; 
+echo "Son: " . $cat->makeSound() . "\n"; 
+
 ?>
